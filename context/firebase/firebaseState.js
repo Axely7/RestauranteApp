@@ -1,11 +1,10 @@
 import React, {useReducer} from 'react';
 
 import firebase from '../../firebase';
-import firebaseReducer from './firebaseReducer';
+import FirebaseReducer from './firebaseReducer';
 import FirebaseContext from './firebaseContext';
 
-
-import { OBTENER_PRODUCTOS } from '../../types';
+import { OBTENER_PRODUCTOS_EXITO } from '../../types';
 
 const FirebaseState = props => {
 
@@ -17,14 +16,11 @@ const FirebaseState = props => {
     }
 
     // useReducer con dispatch para ejecutar las funciones
-    const [state, dispatch] = useReducer(firebaseReducer, initialState);
+    const [state, dispatch] = useReducer(FirebaseReducer, initialState);
 
     // Función que se ejecuta para traer los productos
     const obtenerProductos = () =>{
-        dispatch({
-            type: OBTENER_PRODUCTOS
-        });
-        firebase.db.settings({experimentalForceLongPolling: true});
+        //firebase.db.settings({experimentalForceLongPolling: true});
         // Consultar Firebase
         firebase.db
             .collection('productos')
@@ -39,10 +35,13 @@ const FirebaseState = props => {
                 }
             });
 
-            console.log(platillos);
+            // Tenemos resultados de la base de datos
+            dispatch({
+                type: OBTENER_PRODUCTOS_EXITO,
+                payload: platillos
+            })
         }
     }
-
 
 
     return (
