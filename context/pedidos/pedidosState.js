@@ -19,8 +19,11 @@ const PedidoState = props => {
     const [state, dispatch] = useReducer(PedidoReducer, initialState);
 
     // Seleccionar el Producto que el usuario desea ordenar
-    const seleccionarPlatillo = () =>{
-
+    const seleccionarPlatillo = (platillo) =>{
+        dispatch({
+            type: SELECCIONAR_PRODUCTO,
+            payload: platillo
+        })
     }
 
     return (

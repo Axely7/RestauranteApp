@@ -1,21 +1,29 @@
 import React, {useContext, useEffect, Fragment} from 'react';
 import {StyleSheet, View} from 'react-native';
-import FirebaseContext from '../context/firebase/firebaseContext';
-import {Container, Separator, Content, FlatList, ListItem,
-    Thumbnail, Left, Body, NativeBaseProvider, List, Text, Box, Heading,
-    Avatar, HStack, VStack, Spacer, Center, SectionList, Flex, Divider
+import { useNavigation } from '@react-navigation/native';
+import {NativeBaseProvider, List, Text, Box, Heading,
+    Avatar, HStack, VStack, Spacer, Center, SectionList, Flex, Divider, Pressable,
 } from 'native-base';
 import globalStyles from '../styles/global';
+
+import FirebaseContext from '../context/firebase/firebaseContext';
+import PedidoContext from '../context/pedidos/pedidosContext';
+
 
 const Menu = () => {
 
     // Context de Firebase
     const {menu, obtenerProductos} = useContext(FirebaseContext);
-    let i = 0;
+    
+    // Context de Pedido
+    const {seleccionarPlatillo} = useContext(PedidoContext);
+
+    // Hook para redireccionar
+    const navigation = useNavigation();
 
     useEffect(()=>{
         obtenerProductos();
-        console.log(Object.keys(menu))
+        //console.log(Object.keys(menu))
     }, []);
 
 
@@ -30,24 +38,29 @@ const Menu = () => {
                     keyExtractor={(item, index) => item + index}
                     renderItem={({item: {imagen, nombre, descripcion, precio}}) => (
                     <>
-                        <Flex direction="row">
-                        <Avatar
-                            size="xl"
-                            mx={5}
-                            mt={2}
-                            source={{
-                            uri: imagen,
+                        <Pressable onPress={()=>{
+                            seleccionarPlatillo({imagen, nombre, descripcion, precio})
+                            navigation.navigate("DetallePlatillo");
                             }}>
-                            {nombre}
-                        </Avatar>
-                        <Flex direction="column" mt={1}>
-                            <Text fontWeight="bold">{nombre}</Text>
-                            <Text fontSize="xs" numberOfLines={3}>
-                            {descripcion}
-                            </Text>
-                            <Text fontWeight="bold">Precio: ${precio}</Text>
-                        </Flex>
-                        </Flex>
+                            <Flex direction="row" >
+                                <Avatar
+                                    size="xl"
+                                    mx={5}
+                                    mt={2}
+                                    source={{
+                                    uri: imagen,
+                                    }}>
+                                    {nombre}
+                                </Avatar>
+                                <Flex direction="column" mt={1}>
+                                    <Text fontWeight="bold">{nombre}</Text>
+                                    <Text fontSize="xs" numberOfLines={3}>
+                                    {descripcion}
+                                    </Text>
+                                    <Text fontWeight="bold">Precio: ${precio}</Text>
+                                </Flex>
+                            </Flex>
+                        </Pressable>
                         <Divider my={2} />
                     </>
                     )}

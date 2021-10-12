@@ -29,8 +29,6 @@ const FirebaseState = props => {
             .onSnapshot(snapshot =>{
                 let platillos = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
  
-        // platillos = _.sortBy(platillos, 'categoria');
- 
                 platillos = Array.from(
                     platillos.reduce(
                         (m, {categoria, ...data}) =>
