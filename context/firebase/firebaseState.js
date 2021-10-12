@@ -13,7 +13,7 @@ const FirebaseState = props => {
 
     // Crear state inicial
     const initialState = {
-        menu: []
+        menu: [],
     }
 
     // useReducer con dispatch para ejecutar las funciones
@@ -26,27 +26,30 @@ const FirebaseState = props => {
         firebase.db
             .collection('productos')
             .where('existencia', '==', true) // Trae solo los que estén en existencia
-            .onSnapshot(manejarSnapshot);
+            .onSnapshot(snapshot =>{
+                let platillos = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+ 
+        // platillos = _.sortBy(platillos, 'categoria');
+ 
+                platillos = Array.from(
+                    platillos.reduce(
+                        (m, {categoria, ...data}) =>
+                        m.set(categoria, [...(m.get(categoria) || []), data]),
+                        new Map(),
+                    ),
+                    ([categoria, data]) => ({categoria, data}),
+                );
 
-        function manejarSnapshot(snapshot){
-            let platillos = snapshot.docs.map(doc =>{
-                return{
-                    id: doc.id,
-                    ...doc.data()
-                }
+                // Tenemos resultados de la base de datos
+                dispatch({
+                    type: OBTENER_PRODUCTOS_EXITO,
+                    payload: platillos
+                });
+
             });
-
             // Ordenar por categoria con lodash
-            platillos = _.sortBy(platillos, 'categoria');
+            //platillos = _.sortBy(platillos, 'categoria');
             //console.log(platillos);
-
-
-            // Tenemos resultados de la base de datos
-            dispatch({
-                type: OBTENER_PRODUCTOS_EXITO,
-                payload: platillos
-            })
-        }
     }
 
 
