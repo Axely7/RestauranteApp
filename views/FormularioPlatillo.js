@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { NativeBaseProvider, Box, Heading, Image, Stack, Text, HStack, Button, Center, FormControl, AddIcon, Input} from 'native-base';
 import PedidoContext from '../context/pedidos/pedidosContext';
 import globalStyles from '../styles/global';
@@ -7,6 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const FormularioPlatillo = () => {
+
+    // State para cantidades
+    const [cantidad, guardarCantidad] = useState(1);
+
+
     return ( 
         <NativeBaseProvider>
             <Stack space={4} alignItems="center">
@@ -28,7 +33,10 @@ const FormularioPlatillo = () => {
                         >
                             <Input 
                                 style={{textAlign: 'center', fontSize: 20}}
-                                value="1"></Input>
+                                value={cantidad.toString()}
+                                keyboardType="numeric"
+                                onChangeText={(cantidad) => guardarCantidad(cantidad)}
+                                ></Input>
                         </Button>
 
                         <Button
