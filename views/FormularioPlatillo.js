@@ -12,9 +12,12 @@ const FormularioPlatillo = () => {
     // State para cantidades
     const [cantidad, guardarCantidad] = useState(1);
     const [total, guardarTotal] = useState(0)
-    const {platillo} = useContext(PedidoContext);
+    const {platillo, guardarPedido} = useContext(PedidoContext);
     //console.log(platillo);
     const {precio} = platillo;
+
+    // Redireccionar
+    const navigation = useNavigation();
 
     // En cuanto el componente carga, calcular la cantidad a pagar
     useEffect(() => {
@@ -57,8 +60,17 @@ const FormularioPlatillo = () => {
                     text: 'Confirmar',
                     onPress: () => {
                         // Almacenar el pedido al Pedido master o principal
+                        const pedido = {
+                            ...platillo,
+                            cantidad,
+                            total
+                        }
+
+                        //console.log(pedido);
+                        guardarPedido(pedido);
 
                         // Navegar hacia el resumen
+                        navigation.navigate("ResumenPedido");
                     },
                 },
             ]
