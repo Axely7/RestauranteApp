@@ -23,7 +23,7 @@ const Menu = () => {
 
     useEffect(()=>{
         obtenerProductos();
-        //console.log(Object.keys(menu))
+        //console.log(menu)
     }, []);
 
 
@@ -41,14 +41,16 @@ const Menu = () => {
                         <Pressable onPress={()=>{
                             seleccionarPlatillo({imagen, nombre, descripcion, precio})
                             navigation.navigate("DetallePlatillo");
-                            }}>
+                        }}>
                             <Flex direction="row" >
                                 <Avatar
                                     size="xl"
                                     mx={5}
                                     mt={2}
+                                    borderRadius={0}
+
                                     source={{
-                                    uri: imagen,
+                                        uri: imagen,
                                     }}>
                                     {nombre}
                                 </Avatar>
