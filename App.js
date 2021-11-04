@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import {Button, Text} from 'native-base';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -10,6 +11,9 @@ import DetallePlatillo from './views/DetallePlatillo';
 import FormularioPlatillo from './views/FormularioPlatillo';
 import ResumenPedido from './views/ResumenPedido';
 import ProgresoPedido from './views/ProgresoPedido';
+
+// Components 
+import BotonResumen from './components/ui/BotonResumen';
 
 // importar state de context
 import FirebaseState from './context/firebase/firebaseState';
@@ -45,7 +49,8 @@ const App = () => {
                 name="Menu"
                 component={Menu}
                 options={{
-                  title: "Nuestro Menu"
+                  title: "Nuestro Menu",
+                  headerRight: (props) => <BotonResumen></BotonResumen>
                 }}
               ></Stack.Screen>
               <Stack.Screen

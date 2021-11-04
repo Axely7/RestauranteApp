@@ -8,10 +8,22 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const ResumenPedido = () => {
- 
+
+    const navigation = useNavigation();
+
     // Context de pedido
-    const {pedido} = useContext(PedidoContext);
+    const {pedido, total, mostrarResumen} = useContext(PedidoContext);
     console.log(pedido);
+
+    useEffect(()=>{
+        calcularTotal();
+    }, []);
+
+    const calcularTotal = () => {
+        let nuevoTotal = 0;
+        nuevoTotal = pedido.reduce((nuevoTotal, articulo) => nuevoTotal + articulo.total, 0);
+        mostrarResumen(nuevoTotal);
+    }
 
     return ( 
         <NativeBaseProvider style={globalStyles.contenedor}>
@@ -29,7 +41,7 @@ const ResumenPedido = () => {
                                 <Box
                                     pl="10"
                                     pr="12"
-                                    py="10"
+                                    py="3"
                                 >
                                 <Pressable onPress={() => {
                                     console.log('Yes');
@@ -58,9 +70,20 @@ const ResumenPedido = () => {
                         >
                         </FlatList>
                     </Box>
-                    <Text style={globalStyles.cantidad}>Total a Pagar: $ </Text>
+                    <Text style={globalStyles.cantidad}>Total a Pagar: $ {total}</Text>
+                    <Button style={{marginTop: 30, backgroundColor: '#000'}} w="90%" mb={5} full
+                        onPress={() => navigation.navigate("Menu")}
+                    >
+                        <Text style={{ color:'#FFF', fontWeight: 'bold', textTransform: 'uppercase'}}>Seguir Pidiendo</Text>
+                    </Button>
                 </Center>
             </ScrollView>
+            <Center flex={1}></Center>
+                <HStack alignItems="center" safeAreaBottom>
+                    <Button style={globalStyles.boton} w="100%" mb={5} onPress={ () => navigation.navigate("ProgresoPedido")}>
+                        <Text style={globalStyles.botonTexto}>Ordenar Pedido</Text>
+                    </Button>
+                </HStack>
         </NativeBaseProvider>
      );
 }
