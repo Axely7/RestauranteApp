@@ -25,6 +25,32 @@ const ResumenPedido = () => {
         mostrarResumen(nuevoTotal);
     }
 
+    // Redirecciona a Progreso pedido
+    const progresoPedido = () =>{
+        Alert.alert(
+            'Revisa tu pedido',
+            'Una vez que realizas tu pedido, no podrás cambiarlo',
+            [
+                {
+                    text: 'Revisar',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Confirmar',
+                    onPress: () =>{
+                        navigation.navigate("ProgresoPedido")
+                    }
+                },
+                
+            ]
+        )
+    }
+
+    // Elimina un producto del arreglo de pedido
+    const confirmarEliminacion = id =>{
+        console.log(id);
+    }
+
     return ( 
         <NativeBaseProvider style={globalStyles.contenedor}>
             <ScrollView>
@@ -36,7 +62,7 @@ const ResumenPedido = () => {
                     }}>
                         <FlatList
                             data={pedido}
-                            renderItem={({item: {cantidad, nombre, imagen, precio}}) => (
+                            renderItem={({item: {id, cantidad, nombre, imagen, precio}}) => (
                             <>
                                 <Box
                                     pl="10"
@@ -60,6 +86,13 @@ const ResumenPedido = () => {
                                             >{nombre}</Text>
                                             <Text>Cantidad: {cantidad}</Text>
                                             <Text>Precio: $ {precio}</Text>
+                                            <Button 
+                                                onPress={ () => confirmarEliminacion(id)}
+                                                w="100%" 
+                                                style={{marginTop: 20, }} 
+                                                colorScheme="danger">
+                                                <Text style={{color:'#FFF'}}>Eliminar</Text>
+                                            </Button>
                                         </VStack>
                                         <Spacer />
                                 </HStack>
@@ -80,7 +113,7 @@ const ResumenPedido = () => {
             </ScrollView>
             <Center flex={1}></Center>
                 <HStack alignItems="center" safeAreaBottom>
-                    <Button style={globalStyles.boton} w="100%" mb={5} onPress={ () => navigation.navigate("ProgresoPedido")}>
+                    <Button style={globalStyles.boton} w="100%" mb={5} onPress={ () => progresoPedido()}>
                         <Text style={globalStyles.botonTexto}>Ordenar Pedido</Text>
                     </Button>
                 </HStack>

@@ -39,7 +39,7 @@ const Menu = () => {
                     renderItem={({item: {imagen, nombre, descripcion, precio}}) => (
                     <>
                         <Pressable onPress={()=>{
-                            seleccionarPlatillo({imagen, nombre, descripcion, precio})
+                            seleccionarPlatillo({id, imagen, nombre, descripcion, precio})
                             navigation.navigate("DetallePlatillo");
                         }}>
                             <Flex direction="row" >

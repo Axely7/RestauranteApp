@@ -8,7 +8,7 @@ const DetallePlatillo = () => {
     // Pedido Context
     const {platillo} = useContext(PedidoContext);
     const {nombre, imagen, descripcion, precio} = platillo;
-    //console.log(platillo);
+    console.log(platillo);
 
     // Redireccionar
     const navigation = useNavigation();
