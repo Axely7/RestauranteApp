@@ -6,18 +6,19 @@ import { StyleSheet, Alert, Pressable } from 'react-native';
 import {Ionicons} from "@expo/vector-icons"
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { ELIMINAR_PRODUCTO } from '../types';
 
 const ResumenPedido = () => {
 
     const navigation = useNavigation();
 
     // Context de pedido
-    const {pedido, total, mostrarResumen} = useContext(PedidoContext);
+    const {pedido, total, mostrarResumen, eliminarProducto} = useContext(PedidoContext);
     console.log(pedido);
 
     useEffect(()=>{
         calcularTotal();
-    }, []);
+    }, [pedido]);
 
     const calcularTotal = () => {
         let nuevoTotal = 0;
@@ -48,7 +49,23 @@ const ResumenPedido = () => {
 
     // Elimina un producto del arreglo de pedido
     const confirmarEliminacion = id =>{
-        console.log(id);
+        Alert.alert(
+            '¿Deseas eliminar este artículo?',
+            'Una vez eliminado no se puede recuperar',
+            [
+                {text: 'Cancelar', style:'cancel'},
+                {
+                    text: 'Confirmar',
+                    onPress: () =>{
+                        // Eliminar del state
+                        eliminarProducto(id);
+
+                        // Calcular
+                    }
+                },
+                
+            ]
+        )
     }
 
     return ( 

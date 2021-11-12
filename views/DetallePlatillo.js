@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const DetallePlatillo = () => {
     // Pedido Context
     const {platillo} = useContext(PedidoContext);
-    const {nombre, imagen, descripcion, precio} = platillo;
+    const {id, nombre, imagen, descripcion, precio} = platillo;
     console.log(platillo);
 
     // Redireccionar

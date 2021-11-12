@@ -36,7 +36,7 @@ const Menu = () => {
                     mx={3}
                     sections={menu}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({item: {imagen, nombre, descripcion, precio}}) => (
+                    renderItem={({item: {id, imagen, nombre, descripcion, precio}}) => (
                     <>
                         <Pressable onPress={()=>{
                             seleccionarPlatillo({id, imagen, nombre, descripcion, precio})
