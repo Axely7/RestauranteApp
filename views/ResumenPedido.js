@@ -7,13 +7,14 @@ import {Ionicons} from "@expo/vector-icons"
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { ELIMINAR_PRODUCTO } from '../types';
+import firebase from '../firebase';
 
 const ResumenPedido = () => {
 
     const navigation = useNavigation();
 
     // Context de pedido
-    const {pedido, total, mostrarResumen, eliminarProducto} = useContext(PedidoContext);
+    const {pedido, total, mostrarResumen, eliminarProducto, pedidoRealizado} = useContext(PedidoContext);
     console.log(pedido);
 
     useEffect(()=>{
@@ -38,8 +39,27 @@ const ResumenPedido = () => {
                 },
                 {
                     text: 'Confirmar',
-                    onPress: () =>{
-                        navigation.navigate("ProgresoPedido")
+                    onPress: async () =>{
+                        // creando un objeto
+                        const pedidoObj = {
+                            tiempoentrega: 0,
+                            completado: false,
+                            total: Number(total),
+                            orden: pedido, // array
+                            creado: Date.now()
+                        }
+
+                        console.log(pedidoObj);
+
+                        try {
+                            const pedido = await firebase.db.collection('ordenes').add(pedidoObj);
+                            pedidoRealizado(pedido.id);
+
+                            // Reedireccionar a pedido progreso
+                            navigation.navigate("ProgresoPedido")
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
                 },
                 
@@ -60,7 +80,6 @@ const ResumenPedido = () => {
                         // Eliminar del state
                         eliminarProducto(id);
 
-                        // Calcular
                     }
                 },
                 
